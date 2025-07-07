@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تقويم جولياني هجري ميلادي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#6b4f3b">
+  <style>
+ body {
+  margin: 0;
+  font-family: 'Cairo', sans-serif;
+  background-color: #f5ebe0;
+  color: #6b4f3b;
+  text-align: center;
+}
+
+/* لون الساعة */
+.time {
+  color: #6b4f3b; /* بني متوسط واضح */
+  font-size: 2rem;
+  padding: 20px;
+}
+.scrolling-container {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  direction: rtl;
+}
+
+.scrolling-text {
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #6b4f3b;
+  padding: 10px 0;
+  animation: scroll-right 12s linear infinite;
+}
+
+@keyframes scroll-right {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+  .scrolling-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    direction: rtl;
+  }
+
+  .scrolling-text {
+    display: inline-block;
+    font-size: 1.5rem; /* يمكنك تغييره حسب الحاجة */
+    font-weight: bold;
+    color: #6b4f3b; /* نفس لون النص الثاني */
+    padding: 10px 0;
+    animation: scroll-right 12s linear infinite;
+  }
+
+  @keyframes scroll-right {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+/* اليوم تحت التاريخ (مثلاً: الجمعة) */
+.calendar-date {
+  color: #ede0d4; /* بني رمادي أفتح */
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.time {
+  font-size: 2rem;
+  padding: 20px;
+}
+
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  flex-wrap: wrap;
+}
+
+.calendar-box {
+  background-color: #957e70;
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  width: 250px;
+  box-shadow: 0 4px 8px rgba(113, 107, 107, 0.5);
+}
+
+.calendar-box:hover {
+  background-color: rgb(176, 152, 135);
+}
+
+.calendar-title {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.calendar-date {
+  font-size: 1rem;
+}
+
+.monthly-calendar {
+  background-color: #f5ebe0;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 400px;
+  margin: 10px auto;
+  padding: 10px;
+  display: none;
+  box-shadow: 0 4px 8px rgba(181, 156, 138);
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.month-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #7f5539;
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+th, td {
+  padding: 10px;
+  border: 1px solid #957e70;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* تنسيق أيام الأسبوع */
+th {
+  background-color: #957e70;
+  font-weight: bold;
+  color: #ffffff; /* ← لون الكتابة لأيام الأسبوع */
+}
+
+/* تنسيق أرقام الأيام */
+td {
+  color: #7f5539; /* ← لون الكتابة لأرقام الأيام */
+}
+
+.today {
+  background-color: #ba9e8b !important;
+  color: #ffffff !important;
+  border-radius: 8px;
+}
+
+.calendar-nav-button {
+  background-color: #957e70;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.calendar-nav-button:hover {
+  background-color: #ba9e8b;
+}
+/* 🌐 استجابة الجوال */
+@media (max-width: 600px) {
+  .calendar-title {
+    font-size: 1rem;
+  }
+
+  .calendar-date {
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    padding: 4px 2px;
+    font-size: 0.75rem;
+  }
+
+  .calendar-box,
+  .monthly-calendar {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .time {
+    font-size: 1.5rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="time" id="clock"></div>
+
+<div class="scrolling-container">
+  <div class="scrolling-text">التموين الفني س ص ل 11</div>
+</div>
+  <div class="calendar-container">
+    <div class="calendar-box" onclick="showCalendar('julian-astro')">
+  <div class="calendar-title"> جولياني</div>
+  <div class="calendar-date" id="julian-day-number"></div>
+</div>
+    <div class="calendar-box" onclick="showCalendar('hijri')">
+      <div class="calendar-title">هجري</div>
+      <div class="calendar-date" id="hijri-date"></div>
+    </div>
+    <div class="calendar-box" onclick="showCalendar('gregorian')">
+      <div class="calendar-title">ميلادي</div>
+      <div class="calendar-date" id="gregorian-date"></div>
+    </div>
+  </div>
+<div class="month-header">
+  <button class="calendar-nav-button" onclick="prevMonth()">السابق</button>
+  <span id="calendar-title"></span>
+  <button class="calendar-nav-button" onclick="nextMonth()">التالي</button>
+</div>
+    <table>
+      <thead>
+        <tr id="weekdays"></tr>
+      </thead>
+      <tbody id="calendar-body"></tbody>
+    </table>
+  </div>
+    <div class="scrolling-container">
+  <div id="inventory" class="scrolling-text"></div>
+</div>
+
+  <script>
+    // ثوابت وتعريفات
+    const weekdayNames = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+    // تصحيح أسماء الشهور الهجرية
+    const hijriMonths = ['محرم', 'صفر', 'ربيع الأول', 'ربيع الثاني', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة'];
+    const gregorianMonths = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+    const julianMonths = gregorianMonths;
+
+    // متغيرات عامة
+    let selectedCalendar = '';
+    let currentDate = new Date();
+    let calendarMonth = currentDate.getMonth();
+    let calendarYear = currentDate.getFullYear();
+    
+    
+    // متغيرات للتقويم الهجري
+    let hijriDate = { day: 0, month: 0, year: 0 };
+    
+function getSimpleJulianDate(date = new Date()) {
+  const oneDay = 1000 * 60 * 60 * 24;
+
+  // اجعل التاريخ يبدأ من 18 يونيو 2025 بدلاً من 1 يناير
+  const baseDate = new Date(2025, 5, 18); // 5 = يونيو لأن الأشهر تبدأ من 0
+  const currentDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+  const diffInDays = Math.floor((currentDate - baseDate) / oneDay);
+
+  return 5169 + diffInDays;
+}
+
+  function updateJulianDayNumber() {
+    const julianDay = getSimpleJulianDate();
+    document.getElementById('julian-day-number').textContent = julianDay;
+  }
+  function updateJulianDayNumber() {
+    const julianDay = getSimpleJulianDate();
+    document.getElementById('julian-day-number').textContent = julianDay;
+  }
+
+  updateJulianDayNumber();
+  setInterval(updateJulianDayNumber, 60000);
+
+    // تهيئة التقويم
+    window.onload = function() {
+      initializeCalendar(); // دالتك لتهيئة التقاويم الأخرى
+  updateJulianDayNumber(); // عرض اليوم الجولياني عند التحميل
+  // تحديث كل دقيقة (اختياري، يمكنك حذف هذا السطر إذا لم تحتاجه)
+  setInterval(updateJulianDayNumber, 60000);
+};
+
+    // ===== بيانات تقويم أم القرى للمملكة العربية السعودية =====
+    
+    // تعديل للتقويم الهجري ليتوافق مع تقويم أم القرى السعودي
+    // هذه البيانات تمثل بداية الأشهر الهجرية في تقويم أم القرى لعام 1446هـ
+    const ummAlQuraAdjustments = {
+      // تعديلات شهور عام 1446هـ (تواريخ بداية الشهور بالميلادي)
+      1446: {
+        0: new Date(2024, 6, 7),  // محرم 1446: 7 يوليو 2024
+        1: new Date(2024, 7, 6),  // صفر 1446: 6 أغسطس 2024
+        2: new Date(2024, 8, 4),  // ربيع الأول 1446: 4 سبتمبر 2024
+        3: new Date(2024, 9, 4),  // ربيع الثاني 1446: 4 أكتوبر 2024
+        4: new Date(2024, 10, 2), // جمادى الأولى 1446: 2 نوفمبر 2024
+        5: new Date(2024, 11, 2), // جمادى الآخرة 1446: 2 ديسمبر 2024
+        6: new Date(2024, 11, 31),  // رجب 1446: 31 ديسمبر 2024
+        7: new Date(2025, 0, 30), // شعبان 1446: 30 يناير 2025
+        8: new Date(2025, 1, 28),  // رمضان 1446: 28 فبراير 2025
+        9: new Date(2025, 2, 30), // شوال 1446: 30 مارس 2025
+        10: new Date(2025, 3, 28), // ذو القعدة 1446: 28 أبريل 2025
+        11: new Date(2025, 4, 28)  // ذو الحجة 1446: 28 مايو 2025
+      },
+      // تعديلات شهور عام 1447هـ (تواريخ بداية الشهور بالميلادي)
+      1447: {
+        0: new Date(2025, 5, 26), // محرم 1447: 26 يونيو 2025
+        1: new Date(2025, 6, 26), // صفر 1447: 26 يوليو 2025
+        2: new Date(2025, 7, 24), // ربيع الأول 1447: 24 أغسطس 2025
+        3: new Date(2025, 8, 23), // ربيع الثاني 1447: 23 سبتمبر 2025
+        4: new Date(2025, 9, 23), // جمادى الأولى 1447: 23 أكتوبر 2025 (تم تصحيحه)
+        5: new Date(2025, 10, 22), // جمادى الآخرة 1447: 22 نوفمبر 2025 (تم تصحيحه)
+        6: new Date(2025, 11, 21), // رجب 1447: 21 ديسمبر 2025 (تم تصحيحه)
+        7: new Date(2026, 0, 20), // شعبان 1447: 20 يناير 2026 (تم تصحيحه)
+        8: new Date(2026, 1, 18), // رمضان 1447: 18 فبراير 2026 (تم تصحيحه)
+        9: new Date(2026, 2, 20), // شوال 1447: 20 مارس 2026 (تم تصحيحه)
+        10: new Date(2026, 3, 18), // ذو القعدة 1447: 18 أبريل 2026 (تم تصحيحه)
+        11: new Date(2026, 4, 18)  // ذو الحجة 1447: 18 مايو 2026 (تم تصحيحه)
+      },
+      // تعديلات شهور عام 1448هـ (تواريخ بداية الشهور بالميلادي)
+      1448: {
+        0: new Date(2026, 5, 16), // محرم 1448: 16 يونيو 2026
+        1: new Date(2026, 6, 15), // صفر 1448: 15 يوليو 2026
+        2: new Date(2026, 7, 14), // ربيع الأول 1448: 14 أغسطس 2026
+        3: new Date(2026, 8, 12), // ربيع الثاني 1448: 12 سبتمبر 2026
+        4: new Date(2026, 9, 12), // جمادى الأولى 1448: 12 أكتوبر 2026 
+        5: new Date(2026, 10, 11), // جمادى الآخرة 1448: 11 نوفمبر 2026 (تم تصحيحه)
+        6: new Date(2026, 11, 10), // رجب 1448: 10 ديسمبر 2026 (تم تصحيحه)
+        7: new Date(2027, 0, 9), // شعبان 1448: 9 يناير 2027 (تم تصحيحه)
+        8: new Date(2027, 1, 8), // رمضان 1448: 8 فبراير 2027 (تم تصحيحه)
+        9: new Date(2027, 2, 9), // شوال 1448: 9 مارس 2027 (تم تصحيحه)
+        10: new Date(2027, 3, 8), // ذو القعدة 1448: 8 أبريل 2027 (تم تصحيحه)
+        11: new Date(2027, 4, 7)  // ذو الحجة 1448: 7 مايو 2027 (تم تصحيحه)
+      },
+      // تعديلات شهور عام 1449هـ (تواريخ بداية الشهور بالميلادي)
+    1449: {
+  0: new Date(2027, 5, 6),   // محرم 1449: 6 يونيو 2027
+  1: new Date(2027, 6, 5),   // صفر 1449: 5 يوليو 2027
+  2: new Date(2027, 7, 3),   // ربيع الأول 1449: 3 أغسطس 2027
+  3: new Date(2027, 8, 2),   // ربيع الثاني 1449: 2 سبتمبر 2027
+  4: new Date(2027, 9, 1),   // جمادى الأولى 1449: 1 أكتوبر 2027
+  5: new Date(2027, 9, 31),  // جمادى الآخرة 1449: 31 أكتوبر 2027
+  6: new Date(2027, 10, 29), // رجب 1449: 29 نوفمبر 2027
+  7: new Date(2027, 11, 29), // شعبان 1449: 29 ديسمبر 2027
+  8: new Date(2028, 0, 28),  // رمضان 1449: 28 يناير 2028
+  9: new Date(2028, 1, 26),  // شوال 1449: 26 فبراير 2028
+  10: new Date(2028, 2, 27), // ذو القعدة 1449: 27 مارس 2028
+  11: new Date(2028, 3, 26)  // ذو الحجة 1449: 26 أبريل 2028
+},
+// تعديلات شهور عام 1450هـ (تواريخ بداية الشهور بالميلادي)
+1450: {
+  0: new Date(2028, 4, 25),  // محرم 1450: 25 مايو 2028
+  1: new Date(2028, 5, 24),  // صفر 1450: 24 يونيو 2028
+  2: new Date(2028, 6, 23),  // ربيع الأول 1450: 23 يوليو 2028
+  3: new Date(2028, 7, 22),  // ربيع الثاني 1450: 22 أغسطس 2028
+  4: new Date(2028, 8, 20),  // جمادى الأولى 1450: 20 سبتمبر 2028
+  5: new Date(2028, 9, 19),  // جمادى الآخرة 1450: 19 أكتوبر 2028
+  6: new Date(2028, 10,18),  // رجب 1450: 18 نوفمبر 2028
+  7: new Date(2028, 11,17),  // شعبان 1450: 17 ديسمبر 2028
+  8: new Date(2029, 0, 16),  // رمضان 1450: 16 يناير 2029
+  9: new Date(2029, 1, 14),  // شوال 1450: 14 فبراير 2029
+  10: new Date(2029, 2,16), // ذو القعدة 1450: 16 مارس 2029
+  11: new Date(2029, 3,15)  // ذو الحجة 1450: 15 أبريل 2029
+},
+// تعديلات شهور عام 1451هـ (تواريخ بداية الشهور بالميلادي)
+1451: {
+  0: new Date(2029, 4, 14), // محرم 1451: 14 مايو 2029
+  1: new Date(2029, 5, 13), // صفر    : 13 يونيو 2029
+  2: new Date(2029, 6, 13), // ربيع الأول: 13 يوليو 2029
+  3: new Date(2029, 7, 11), // ربيع الثاني: 11 أغسطس 2029
+  4: new Date(2029, 8, 10), // جمادى الأولى: 10 سبتمبر 2029
+  5: new Date(2029, 9, 9),  // جمادى الآخرة: 9 أكتوبر 2029
+  6: new Date(2029, 10, 7), // رجب         : 7 نوفمبر 2029
+  7: new Date(2029, 11, 7), // شعبان       : 7 ديسمبر 2029
+  8: new Date(2030, 0, 5),  // رمضان       : 5 يناير 2030
+  9: new Date(2030, 1, 4),  // شوال        : 4 فبراير 2030
+  10: new Date(2030, 2, 5), // ذو القعدة  : 5 مارس 2030
+  11: new Date(2030, 3, 4)  // ذو الحجة    : 4 أبريل 2030
+},
+// تعديلات شهور عام 1452هـ (تواريخ بداية الشهور بالميلادي)
+1452: {
+  0: new Date(2030, 4, 3),  // محرم 1452: 3 مايو 2030
+  1: new Date(2030, 5, 2),  // صفر     : 2 يونيو 2030
+  2: new Date(2030, 6, 2),  // ربيع الأول: 2 يوليو 2030
+  3: new Date(2030, 7, 1),  // ربيع الثاني: 1 أغسطس 2030
+  4: new Date(2030, 7, 30), // جمادى الأولى: 30 أغسطس 2030
+  5: new Date(2030, 8, 29), // جمادى الآخرة: 29 سبتمبر 2030
+  6: new Date(2030, 9, 28),// رجب         : 28 أكتوبر 2030
+  7: new Date(2030, 10, 26),// شعبان       : 26 نوفمبر 2030
+  8: new Date(2030, 11, 26),// 2031 رمضان:  26 ديسمبر 
+  9: new Date(2031, 0, 24), // شوال       : 24 يناير 2031
+  10: new Date(2031, 1, 23),// ذو القعدة   : 23 فبراير 2031
+  11: new Date(2031, 2, 24) // ذو الحجة    : 24 مارس 2031
+},
+// تعديلات شهور عام 1453هـ (تواريخ بداية الشهور بالميلادي)
+1453: {
+  0: new Date(2031, 3, 23), // محرم 1453: 23 أبريل 2031
+  1: new Date(2031, 4, 22), // صفر         : 22 مايو 2031
+  2: new Date(2031, 5, 21), // ربيع الأول  : 21 يونيو 2031
+  3: new Date(2031, 6, 21), // ربيع الثاني : 21 يوليو 2031
+  4: new Date(2031, 7, 20), // جمادى الأولى: 20 أغسطس 2031
+  5: new Date(2031, 8, 18), // جمادى الآخرة: 18 سبتمبر 2031
+  6: new Date(2031, 9, 17), // رجب         : 17 أكتوبر 2031
+  7: new Date(2031, 10,16), // شعبان       : 16 نوفمبر 2031
+  8: new Date(2031, 11,15), // رمضان       : 15 ديسمبر 2031
+  9: new Date(2032, 0,14),  // شوال        : 14 يناير 2032
+  10: new Date(2032, 1,12), // ذو القعدة   : 12 فبراير 2032
+  11: new Date(2032, 2,13)  // ذو الحجة    : 13 مارس 2032
+},
+// تعديلات شهور عام 1454هـ (تواريخ بداية الشهور بالميلادي)
+1454: {
+  0: new Date(2032, 3, 11), // محرم 1454: 11 أبريل 2032
+  1: new Date(2032, 4, 10), // صفر        : 10 مايو 2032
+  2: new Date(2032, 5, 9),  // ربيع الأول: 9 يونيو 2032
+  3: new Date(2032, 6, 9),  // ربيع الثاني: 9 يوليو 2032
+  4: new Date(2032, 7, 8),  // جمادى الأولى: 8 أغسطس 2032
+  5: new Date(2032, 8, 6),  // جمادى الآخرة: 6 سبتمبر 2032
+  6: new Date(2032, 9, 6),  // رجب         : 6 أكتوبر 2032
+  7: new Date(2032, 10,4), // شعبان       : 4 نوفمبر 2032
+  8: new Date(2032, 11,4), // رمضان       : 4 ديسمبر 2032
+  9: new Date(2033, 0,2),  // شوال        : 2 يناير 2033
+  10: new Date(2033, 1,1), // ذو القعدة   : 1 فبراير 2033
+  11: new Date(2033, 2,2)  // ذو الحجة    : 2 مارس 2033
+},
+// تعديلات شهور عام 1455هـ (تواريخ بداية الشهور بالميلادي)
+1455: {
+  0: new Date(2033, 3, 1),   // محرم 1455: 1 أبريل 2033
+  1: new Date(2033, 3, 30),  // صفر        : 30 أبريل 2033
+  2: new Date(2033, 4, 29),  // ربيع الأول: 29 مايو 2033
+  3: new Date(2033, 5, 28),  // ربيع الثاني: 28 يونيو 2033
+  4: new Date(2033, 6, 28),  // جمادى الأولى: 28 يوليو 2033
+  5: new Date(2033, 7, 26),  // جمادى الآخرة: 26 أغسطس 2033
+  6: new Date(2033, 8, 25),  // رجب         : 25 سبتمبر 2033
+  7: new Date(2033, 9, 24),  // شعبان       : 24 أكتوبر 2033
+  8: new Date(2033, 10,23), // رمضان       : 23 نوفمبر 2033
+  9: new Date(2033, 11,23), // شوال        : 23 ديسمبر 2033
+  10: new Date(2034, 0,21), // ذو القعدة   : 21 يناير 2034
+  11: new Date(2034, 1,20)  // ذو الحجة    : 20 فبراير 2034
+},
+// تعديلات شهور عام 1456هـ (تواريخ بداية الشهور بالميلادي)
+1456: {
+  0: new Date(2034, 2, 21), // محرم 1456: 21 مارس 2034
+  1: new Date(2034, 3, 20), // صفر        : 20 أبريل 2034
+  2: new Date(2034, 4, 19), // ربيع الأول: 19 مايو 2034
+  3: new Date(2034, 5, 17), // ربيع الثاني: 17 يونيو 2034
+  4: new Date(2034, 6, 17), // جمادى الأولى: 17 يوليو 2034
+  5: new Date(2034, 7, 15), // جمادى الآخرة: 15 أغسطس 2034
+  6: new Date(2034, 8, 14), // رجب         : 14 سبتمبر 2034
+  7: new Date(2034, 9, 13), // شعبان       : 13 أكتوبر 2034
+  8: new Date(2034, 10,12),// رمضان       : 12 نوفمبر 2034
+  9: new Date(2034, 11,12),// شوال        : 12 ديسمبر 2034
+  10: new Date(2035, 0,11),// ذو القعدة   : 11 يناير 2035
+  11: new Date(2035, 1,9)  // ذو الحجة    : 9 فبراير 2035
+},
+// تعديلات شهور عام 1457هـ (تواريخ بداية الشهور بالميلادي)
+1457: {
+  0: new Date(2035, 2, 11), // محرم 1457: 11 مارس 2035
+  1: new Date(2035, 3, 9), // صفر        : 9 أبريل 2035
+  2: new Date(2035, 4, 9),  // ربيع الأول: 9 مايو 2035
+  3: new Date(2035, 5, 7),  // ربيع الثاني: 7 يونيو 2035
+  4: new Date(2035, 6, 6),  // جمادى الأولى: 6 يوليو 2035
+  5: new Date(2035, 7, 5),  // جمادى الآخرة: 5 أغسطس 2035
+  6: new Date(2035, 8, 3),  // رجب         : 3 سبتمبر 2035
+  7: new Date(2035, 9, 2),  // شعبان       : 2 أكتوبر 2035
+  8: new Date(2035, 10,1), // رمضان       : 1 نوفمبر 2035
+  9: new Date(2035, 11,1), // شوال        : 1 ديسمبر 2035
+  10: new Date(2035, 11,30),// ذو القعدة   : 30 ديسمبر 2035
+  11: new Date(2036, 0,29) // ذو الحجة    : 29 يناير 2036
+},
+// تعديلات شهور عام 1458هـ (تواريخ بداية الشهور بالميلادي)
+1458: {
+  0: new Date(2036, 1, 28), // محرم 1458: 28 فبراير 2036
+  1: new Date(2036, 2, 29), // صفر        : 29 مارس 2036
+  2: new Date(2036, 3, 27), // ربيع الأول: 27 أبريل 2036
+  3: new Date(2036, 4, 27), // ربيع الثاني: 27 مايو 2036
+  4: new Date(2036, 5, 25), // جمادى الأولى: 25 يونيو 2036
+  5: new Date(2036, 6, 24), // جمادى الآخرة: 24 يوليو 2036
+  6: new Date(2036, 7, 23), // رجب         : 23 أغسطس 2036
+  7: new Date(2036, 8, 21), // شعبان       : 21 سبتمبر 2036
+  8: new Date(2036, 9, 20), // رمضان       : 20 أكتوبر 2036
+  9: new Date(2036, 10,19),// شوال        : 19 نوفمبر 2036
+  10: new Date(2036, 11,19),// ذو القعدة   : 19 ديسمبر 2036
+  11: new Date(2037, 0,17) // ذو الحجة    : 17 يناير 2037
+},
+// تعديلات شهور عام 1459هـ (تواريخ بداية الشهور بالميلادي)
+1459: {
+  0: new Date(2037, 1, 16), // محرم 1459: 16 فبراير 2037
+  1: new Date(2037, 2, 18), // صفر        : 18 مارس 2037
+  2: new Date(2037, 3, 17), // ربيع الأول: 17 أبريل 2037
+  3: new Date(2037, 4, 16), // ربيع الثاني: 16 مايو 2037
+  4: new Date(2037, 5, 15), // جمادى الأولى: 15 يونيو 2037
+  5: new Date(2037, 6, 14), // جمادى الآخرة: 14 يوليو 2037
+  6: new Date(2037, 7, 12), // رجب         : 12 أغسطس 2037
+  7: new Date(2037, 8, 11), // شعبان       : 11 سبتمبر 2037
+  8: new Date(2037, 9, 10), // رمضان       : 10 أكتوبر 2037
+  9: new Date(2037, 10,8), // شوال        : 8 نوفمبر 2037
+  10: new Date(2037, 11,8),// ذو القعدة   : 8 ديسمبر 2037
+  11: new Date(2038, 0,7) // ذو الحجة    : 7 يناير 2038
+},
+// تعديلات شهور عام 1460هـ (تواريخ بداية الشهور بالميلادي)
+1460: {
+  0: new Date(2038, 1, 5),  // محرم 1460: 5 فبراير 2038
+  1: new Date(2038, 2, 7),  // صفر        : 7 مارس 2038
+  2: new Date(2038, 3, 6),  // ربيع الأول: 6 أبريل 2038
+  3: new Date(2038, 4, 5),  // ربيع الثاني: 5 مايو 2038
+  4: new Date(2038, 5, 4),  // جمادى الأولى: 4 يونيو 2038
+  5: new Date(2038, 6, 3),  // جمادى الآخرة: 3 يوليو 2038
+  6: new Date(2038, 7, 2),  // رجب         : 2 أغسطس 2038
+  7: new Date(2038, 7, 31),  // شعبان       :31 أغسطس 2038
+  8: new Date(2038, 8, 30),  // رمضان       : 30 سبتمبر 2038
+  9: new Date(2038, 9,29), // شوال        : 29 أكتوبر 2038
+  10: new Date(2038, 10,27) ,// ذو القعدة   : 27 نوفمبر 2038
+  11: new Date(2038, 11,27)  // ذو الحجة    : 27 ديسمبر 2038
+  }
+    };
+    
+    // تعديل خاص للتاريخ الحالي 
+    const currentHijriDate = {
+      
+    };
+    
+    // دالة لحساب عدد أيام الشهر الهجري حسب تقويم أم القرى
+    function getUmmAlQuraDaysInMonth(year, month) {
+      // تحويل الشهر من 0-11 إلى 1-12 إذا لزم الأمر
+      if (month < 1) month += 1;
+      
+      // التحقق من وجود بيانات للسنة والشهر
+      if (ummAlQuraAdjustments[year] && ummAlQuraAdjustments[year][month-1]) {
+        // حساب عدد الأيام بين بداية الشهر الحالي وبداية الشهر التالي
+        const currentMonthStart = ummAlQuraAdjustments[year][month-1];
+        
+        // حساب بداية الشهر التالي
+        let nextMonthStart;
+        if (month === 12) {
+          // إذا كان الشهر هو ذو الحجة، نحتاج إلى بداية محرم من السنة التالية
+          if (ummAlQuraAdjustments[year+1] && ummAlQuraAdjustments[year+1][0]) {
+            nextMonthStart = ummAlQuraAdjustments[year+1][0];
+          } else {
+            // إذا لم تتوفر البيانات، نستخدم الحساب التقليدي
+            return month % 2 === 1 || (month === 12 && isHijriLeapYear(year)) ? 30 : 29;
+          }
+        } else {
+          // للشهور من محرم إلى ذو القعدة
+          if (ummAlQuraAdjustments[year][month]) {
+            nextMonthStart = ummAlQuraAdjustments[year][month];
+          } else {
+            // إذا لم تتوفر البيانات، نستخدم الحساب التقليدي
+            return month % 2 === 1 || (month === 12 && isHijriLeapYear(year)) ? 30 : 29;
+          }
+        }
+        
+        // حساب الفرق بالأيام
+        const diffTime = nextMonthStart - currentMonthStart;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+      }
+      
+      // إذا لم تتوفر البيانات، نستخدم الحساب التقليدي
+      return month % 2 === 1 || (month === 12 && isHijriLeapYear(year)) ? 30 : 29;
+    }
+
+    // ===== دوال حساب التقويم الهجري =====
+    
+    // تحويل التاريخ الميلادي إلى هجري (تقويم أم القرى)
+    function gregorianToHijri(gregorianDate){
+      // استخدام التاريخ الهجري الحالي  
+      if (isToday(gregorianDate)) 
+      
+      // البحث في بيانات تقويم أم القرى
+      for (const year in ummAlQuraAdjustments) {
+        for (const month in ummAlQuraAdjustments[year]) {
+          const monthStart = ummAlQuraAdjustments[year][month];
+          let nextMonthStart;
+          
+          // تحديد بداية الشهر التالي
+          if (parseInt(month) === 11) {
+            // إذا كان الشهر هو ذو الحجة، نحتاج إلى بداية محرم من السنة التالية
+            if (ummAlQuraAdjustments[parseInt(year)+1] && ummAlQuraAdjustments[parseInt(year)+1][0]) {
+              nextMonthStart = ummAlQuraAdjustments[parseInt(year)+1][0];
+            } else {
+              // إذا لم تتوفر البيانات، نضيف 29/30 يوم حسب قاعدة الشهور الهجرية
+              const daysInMonth = parseInt(month) % 2 === 1 || (parseInt(month) === 11 && isHijriLeapYear(parseInt(year))) ? 30 : 29;
+              nextMonthStart = new Date(monthStart);
+              nextMonthStart.setDate(nextMonthStart.getDate() + daysInMonth);
+            }
+          } else {
+            // للشهور من محرم إلى ذو القعدة
+            nextMonthStart = ummAlQuraAdjustments[year][parseInt(month)+1];
+          }
+          
+          // التحقق مما إذا كان التاريخ الميلادي يقع في هذا الشهر الهجري
+          if (monthStart <= gregorianDate && (!nextMonthStart || gregorianDate < nextMonthStart)) {
+            // حساب اليوم في الشهر الهجري
+            const diffTime = gregorianDate - monthStart;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            
+            return {
+              day: diffDays,
+              month: parseInt(month),
+              year: parseInt(year)
+            };
+          }
+        }
+      }
+      
+      // إذا لم يتم العثور على التاريخ في بيانات تقويم أم القرى، نستخدم الحساب التقليدي
+      return traditionalGregorianToHijri(gregorianDate);
+    }
+    
+    // التحقق مما إذا كان التاريخ هو اليوم الحالي
+    function isToday(date) {
+      const today = new Date();
+      return date.getDate() === today.getDate() &&
+             date.getMonth() === today.getMonth() &&
+             date.getFullYear() === today.getFullYear();
+    }
+    
+    // الطريقة التقليدية لتحويل التاريخ الميلادي إلى هجري (للتواريخ خارج نطاق بيانات أم القرى)
+    function traditionalGregorianToHijri(gregorianDate) {
+      // استخراج مكونات التاريخ الميلادي
+      const year = gregorianDate.getFullYear();
+      const month = gregorianDate.getMonth() + 1; // تحويل من 0-11 إلى 1-12
+      const day = gregorianDate.getDate();
+      
+      // تحويل التاريخ الميلادي إلى يوم جولياني
+      const jd = gregorianToJD(year, month, day);
+      
+      // تحويل اليوم الجولياني إلى تاريخ هجري
+      return jdToHijri(jd);
+    }
+    
+    // تحويل التاريخ الميلادي إلى يوم جولياني
+    function gregorianToJD(year, month, day) {
+      if (month <= 2) {
+        year -= 1;
+        month += 12;
+      }
+      
+      const a = Math.floor(year / 100);
+      const b = Math.floor(a / 4);
+      const c = 2 - a + b;
+      const e = Math.floor(365.25 * (year + 4716));
+      const f = Math.floor(30.6001 * (month + 1));
+      
+      return c + day + e + f - 1524.5;
+    }
+    
+    // تحويل اليوم الجولياني إلى تاريخ هجري
+    function jdToHijri(jd) {
+      // معادلة التحويل من اليوم الجولياني إلى التاريخ الهجري
+      jd = Math.floor(jd) + 0.5;
+      const year = Math.floor(((30 * (jd - 1948439.5)) + 10646) / 10631);
+      
+      // حساب بداية السنة الهجرية
+      const yearStart = Math.floor(((year - 1) * 10631) / 30) + 1948440;
+      
+      // حساب اليوم في السنة
+      const dayOfYear = jd - yearStart;
+      
+      // حساب الشهر واليوم
+      let month = 1;
+      let day = dayOfYear;
+      
+      // تعديل الشهر واليوم
+      let daysInMonth = 0;
+      while (day > (daysInMonth = getDaysInHijriMonth(year, month))) {
+        day -= daysInMonth;
+        month++;
+      }
+      
+      return {
+        day: Math.floor(day),
+        month: month - 1, // تحويل من 1-12 إلى 0-11 للاستخدام الداخلي
+        year: year
+      };
+    }
+    
+    // حساب عدد أيام الشهر في التقويم الهجري
+    function getDaysInHijriMonth(year, month) {
+      // أولاً نحاول استخدام بيانات تقويم أم القرى
+      if (ummAlQuraAdjustments[year] && month >= 1 && month <= 12) {
+        return getUmmAlQuraDaysInMonth(year, month);
+      }
+      
+      // في التقويم الهجري التقليدي، الشهور الفردية 30 يوم والشهور الزوجية 29 يوم
+      // باستثناء ذو الحجة في السنوات الكبيسة يكون 30 يوم
+      if (month % 2 === 1 || (month === 12 && isHijriLeapYear(year))) {
+        return 30;
+      } else {
+        return 29;
+      }
+    }
+    
+    // التحقق من السنة الكبيسة في التقويم الهجري
+    function isHijriLeapYear(year) {
+      const remainder = (year * 11 + 14) % 30;
+      return [2, 5, 7, 10, 13, 16, 18, 21, 24, 26, 29].includes(remainder);
+    }
+    
+    // حساب يوم الأسبوع للتاريخ الهجري
+    function getHijriWeekday(year, month, day) {
+      // تحويل الشهر من 0-11 إلى 1-12 إذا لزم الأمر
+      if (month < 1) month += 1;
+      
+      // البحث في بيانات تقويم أم القرى
+      if (ummAlQuraAdjustments[year] && ummAlQuraAdjustments[year][month-1]) {
+        const monthStart = ummAlQuraAdjustments[year][month-1];
+        const targetDate = new Date(monthStart);
+        targetDate.setDate(monthStart.getDate() + day - 1);
+        return targetDate.getDay(); // 0 للأحد، 1 للاثنين، ...
+      }
+      
+      // إذا لم تتوفر البيانات، نستخدم الطريقة التقليدية
+      // تحويل التاريخ الهجري إلى يوم جولياني
+      const jd = hijriToJD(year, month, day);
+      
+      // حساب يوم الأسبوع من اليوم الجولياني
+      return Math.floor((jd + 1.5) % 7);
+    }
+    
+    // تحويل التاريخ الهجري إلى يوم جولياني
+    function hijriToJD(year, month, day) {
+      return Math.floor((10631 * year - 10617) / 30) + Math.floor((325 * month - 320) / 11) + day + 1948439;
+    }
+
+    // ===== دوال عامة للتقويم =====
+    
+    // تهيئة التقويم وبدء التحديث التلقائي
+    function initializeCalendar() {
+      updateDates();
+      setAllDates();
+      
+      // تحديث التاريخ والوقت كل دقيقة
+      setInterval(function() {
+        currentDate = new Date();
+        updateDates();
+        setAllDates();
+        
+        // إذا كان التقويم معروضًا، قم بتحديثه أيضًا
+        if (document.getElementById('calendar-display').style.display === 'block') {
+          renderCalendar();
+        }
+      }, 60000); // تحديث كل دقيقة
+      
+      // تحديث الساعة كل ثانية
+      setInterval(updateClock, 1000);
+      updateClock();
+    }
+    
+    // تحديث التواريخ الحالية
+    function updateDates() {
+      
+      // تحديث التاريخ الهجري
+      hijriDate = gregorianToHijri(currentDate);
+    }
+    
+    // تحديث الساعة
+    function updateClock() {
+      const now = new Date();
+      // استخدام الأرقام الإنجليزية بدلاً من العربية
+      document.getElementById('clock').innerText = now.toLocaleTimeString('en-US');
+    }
+    
+    // تنسيق التاريخ للعرض
+    function formatDate(date, type) {
+      const dayName = date.toLocaleDateString('ar', { weekday: 'long' });
+      
+      if (type === 'hijri') {
+        return `${dayName}، ${hijriDate.day} ${hijriMonths[hijriDate.month]} ${hijriDate.year} هـ`;
+      }
+      
+      
+      return `${dayName}، ${date.getDate()} ${gregorianMonths[date.getMonth()]} ${date.getFullYear()}`;
+    }
+    
+    // تعيين جميع التواريخ في واجهة المستخدم
+    function setAllDates() {
+      document.getElementById('gregorian-date').innerText = formatDate(currentDate, 'gregorian');
+      document.getElementById('hijri-date').innerText = formatDate(currentDate, 'hijri');
+    }
+    
+    // عرض التقويم المحدد
+    function showCalendar(type) {
+      selectedCalendar = type;
+      
+      if (type === 'hijri') {
+        // استخدام التاريخ الهجري المحسوب
+        calendarMonth = hijriDate.month;
+        calendarYear = hijriDate.year;
+      }  else if (type === 'julian-astro') {
+    calendarMonth = currentDate.getMonth();
+    calendarYear = currentDate.getFullYear();
+    renderJulianAstroCalendar(); // استدعاء الدالة الجديدة
+    document.getElementById('calendar-display').style.display = 'block';
+  } else {
+        // التقويم الميلادي
+        calendarMonth = currentDate.getMonth();
+        calendarYear = currentDate.getFullYear();
+      }
+      
+      renderCalendar();
+      document.getElementById('calendar-display').style.display = 'block';
+    }
+    
+    // عرض التقويم
+    function renderCalendar() {
+      let monthName = '';
+      let daysInMonth = 30;
+      let firstDay = 0;
+      
+      if (selectedCalendar === 'hijri') {
+        // عرض التقويم الهجري
+        monthName = hijriMonths[calendarMonth];
+        
+        // حساب عدد الأيام في الشهر الهجري
+        daysInMonth = getDaysInHijriMonth(calendarYear, calendarMonth + 1);
+        
+        // حساب يوم بداية الشهر الهجري
+        firstDay = getHijriWeekday(calendarYear, calendarMonth + 1, 1);
+        
+        document.getElementById('calendar-title').innerText = `${monthName} ${calendarYear} هـ`;
+        document.getElementById('weekdays').innerHTML = weekdayNames.map(d => `<th>${d}</th>`).join('');
+        
+
+      } else {
+        // عرض التقويم الميلادي
+        monthName = gregorianMonths[calendarMonth];
+        daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+        firstDay = new Date(calendarYear, calendarMonth, 1).getDay();
+        
+        document.getElementById('calendar-title').innerText = `${monthName} ${calendarYear}`;
+        document.getElementById('weekdays').innerHTML = weekdayNames.map(d => `<th>${d}</th>`).join('');
+      }
+      
+      // بناء جدول التقويم
+      let html = '';
+      let date = 1;
+      for (let i = 0; i < 6; i++) {
+        let row = '<tr>';
+        for (let j = 0; j < 7; j++) {
+          if (i === 0 && j < firstDay) {
+            row += '<td></td>';
+          } else if (date > daysInMonth) {
+            break;
+          } else {
+            let isToday = false;
+            
+            if (selectedCalendar === 'hijri') {
+              // التحقق من اليوم الحالي في التقويم الهجري
+              isToday = (
+                date === hijriDate.day &&
+                calendarMonth === hijriDate.month &&
+                calendarYear === hijriDate.year
+              );
+            } else {
+              // التحقق من اليوم الحالي في التقويم الميلادي
+              isToday = (
+                date === currentDate.getDate() &&
+                calendarMonth === currentDate.getMonth() &&
+                calendarYear === currentDate.getFullYear()
+              );
+            }
+            
+            row += `<td class="${isToday ? 'today' : ''}">${date}</td>`;
+            date++;
+          }
+        }
+        row += '</tr>';
+        html += row;
+      }
+      
+      document.getElementById('calendar-body').innerHTML = html;
+    }
+    
+    // الانتقال إلى الشهر التالي
+    function nextMonth() {
+  calendarMonth++;
+  if (calendarMonth > 11) {
+    calendarMonth = 0;
+    calendarYear++;
+  }
+
+  if (selectedCalendar === 'hijri') {
+    renderCalendar(); // دالة تقويم الهجري
+  } else if (selectedCalendar === 'julian') {
+    renderCalendar(); // دالة تقويم الجولياني
+  } else if (selectedCalendar === 'gregorian') {
+    renderCalendar(); // دالة التقويم الميلادي
+  } else if (selectedCalendar === 'julian-astro') {
+    renderJulianAstroCalendar(); // ← هنا الفرق
+  }
+}
+
+    // الانتقال إلى الشهر السابق
+    function prevMonth() {
+  calendarMonth--;
+  if (calendarMonth < 0) {
+    calendarMonth = 11;
+    calendarYear--;
+  }
+
+  if (selectedCalendar === 'hijri') {
+    renderCalendar();
+  } else if (selectedCalendar === 'julian') {
+    renderCalendar();
+  } else if (selectedCalendar === 'gregorian') {
+    renderCalendar();
+  } else if (selectedCalendar === 'julian-astro') {
+    renderJulianAstroCalendar();
+  }
+}
+
+    function renderJulianAstroCalendar() {
+  const monthName = gregorianMonths[calendarMonth];
+  const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+  const firstDay = new Date(calendarYear, calendarMonth, 1).getDay();
+
+  document.getElementById('calendar-title').innerText = `${monthName} ${calendarYear} (اليوم الجولياني الفلكي)`;
+  document.getElementById('weekdays').innerHTML = weekdayNames.map(d => `<th>${d}</th>`).join('');
+
+  let html = '';
+  let date = 1;
+  const baseDate = new Date(2025, 5, 18); // 18 يونيو 2025 = اليوم 5169
+
+  for (let i = 0; i < 6; i++) {
+    let row = '<tr>';
+    for (let j = 0; j < 7; j++) {
+      if (i === 0 && j < firstDay) {
+        row += '<td></td>';
+      } else if (date > daysInMonth) {
+        break;
+      } else {
+        const currentDay = new Date(calendarYear, calendarMonth, date);
+        const diffInDays = Math.round((currentDay - baseDate) / (1000 * 60 * 60 * 24));
+        const julianValue = 5169 + diffInDays;
+        const isToday = (
+  currentDay.getDate() === currentDate.getDate() &&
+  currentDay.getMonth() === currentDate.getMonth() &&
+  currentDay.getFullYear() === currentDate.getFullYear()
+);
+
+row += `<td class="${isToday ? 'today' : ''}">${julianValue}</td>`;
+        date++;
+      }
+    }
+    row += '</tr>';
+    html += row;
+  }
+
+  document.getElementById('calendar-body').innerHTML = html;
+}
+function updateInventory() {
+  const baseDay = 5180;
+  const interval = 90;
+  const todayJulian = getSimpleJulianDate();
+
+  const passed = todayJulian - baseDay;
+  const nextInventory = baseDay + Math.ceil(passed / interval) * interval;
+
+  document.getElementById("inventory").textContent = "الجرد القادم " + nextInventory;
+}
+
+// عند التحميل
+updateInventory();
+// التحديث كل دقيقة
+setInterval(updateInventory, 60000);
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log('Service Worker مسجّل بنجاح'))
+      .catch((error) => console.error('فشل تسجيل Service Worker:', error));
+  }
+
+  </script>
+</body>
+</html>

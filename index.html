@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>تسجيل دخول</title>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f9f9f9;
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    input {
+      padding: 10px;
+      font-size: 18px;
+      margin: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h2>🔐 أدخل كلمة المرور للدخول</h2>
+  <input type="password" id="password" placeholder="كلمة المرور" />
+  <button onclick="checkPassword()">دخول</button>
+
+  <script>
+    function checkPassword() {
+      const correctPassword = "admin"; // ← غيّري كلمة السر هنا
+      const input = document.getElementById("password").value;
+      if (input === correctPassword) {
+        // إذا كلمة السر صحيحة → انتقل إلى الصفحة الرئيسية
+        window.location.href = "calendar.html";
+      } else {
+        alert("❌ كلمة المرور غير صحيحة!");
+      }
+    }
+  </script>
+</body>
+</html>
